@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
@@ -29,6 +31,7 @@ public class HelloWorldJobConfig {
     }
 
     @Bean
+    @JobScope // job이 실행될 때 빈 생성 -> 객체 낭비가 줄어든다!
     public Step helloWorldStep1() {
         return stepBuilderFactory.get("helloWorldStep1")
                 .tasklet(helloWorldTasklet())
@@ -37,6 +40,7 @@ public class HelloWorldJobConfig {
 
     // Tasklet: 하나의 작업 단위
     @Bean
+    @StepScope // step이 실행될 때 빈 생성 -> 객체 낭비가 줄어든다!
     public Tasklet helloWorldTasklet() {
         return (contribution, chunkContext) -> {
             System.out.println("헬로월드!");
