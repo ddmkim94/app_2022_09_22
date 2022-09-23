@@ -14,55 +14,50 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class HelloWorldJobConfig {
+public class WithParamJobConfig {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public Job helloWorldJob() {
+    public Job withParamJob() {
         return jobBuilderFactory.get("helloWorldJob")
-                // .incrementer(new RunIdIncrementer()) // 강제로 매번 다른 ID를 실행시에 파라미터로 부여
-                .start(helloWorldStep1())
-                .next(helloWorldStep2())
+                .start(withParamStep1())
+                .next(withParamStep2())
                 .build();
     }
 
     @Bean
     @JobScope
-    public Step helloWorldStep1() {
-        return stepBuilderFactory.get("helloWorldStep1")
-                .tasklet(helloWorldStep1Tasklet())
+    public Step withParamStep1() {
+        return stepBuilderFactory.get("withParamStep1")
+                .tasklet(withParamStep1Tasklet())
+                .build();
+    }
+
+    @Bean
+    @JobScope
+    public Step withParamStep2() {
+        return stepBuilderFactory.get("withParamStep2")
+                .tasklet(withParamStep2Tasklet())
                 .build();
     }
 
     @Bean
     @StepScope
-    public Tasklet helloWorldStep1Tasklet() {
+    public Tasklet withParamStep1Tasklet() {
         return (contribution, chunkContext) -> {
-            System.out.println("헬로월드 테스클릿 1");
+            System.out.println("출력 : withParam1 테스클릿!");
 
             return RepeatStatus.FINISHED;
         };
     }
 
     @Bean
-    @JobScope
-    public Step helloWorldStep2() {
-        return stepBuilderFactory.get("helloWorldStep2")
-                .tasklet(helloWorldStep2Tasklet())
-                .build();
-    }
-
-    @Bean
     @StepScope
-    public Tasklet helloWorldStep2Tasklet() {
+    public Tasklet withParamStep2Tasklet() {
         return (contribution, chunkContext) -> {
-            System.out.println("헬로월드 테스클릿 2");
-
-            if (false) {
-                throw new Exception("실패 : 헬로월드 테스클릿 2");
-            }
+            System.out.println("출력 : withParam2 테스클릿!");
 
             return RepeatStatus.FINISHED;
         };
