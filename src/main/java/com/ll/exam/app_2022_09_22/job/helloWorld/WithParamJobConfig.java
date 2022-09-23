@@ -21,9 +21,8 @@ public class WithParamJobConfig {
 
     @Bean
     public Job withParamJob() {
-        return jobBuilderFactory.get("helloWorldJob")
+        return jobBuilderFactory.get("withParamJob")
                 .start(withParamStep1())
-                .next(withParamStep2())
                 .build();
     }
 
@@ -36,28 +35,10 @@ public class WithParamJobConfig {
     }
 
     @Bean
-    @JobScope
-    public Step withParamStep2() {
-        return stepBuilderFactory.get("withParamStep2")
-                .tasklet(withParamStep2Tasklet())
-                .build();
-    }
-
-    @Bean
     @StepScope
     public Tasklet withParamStep1Tasklet() {
         return (contribution, chunkContext) -> {
             System.out.println("출력 : withParam1 테스클릿!");
-
-            return RepeatStatus.FINISHED;
-        };
-    }
-
-    @Bean
-    @StepScope
-    public Tasklet withParamStep2Tasklet() {
-        return (contribution, chunkContext) -> {
-            System.out.println("출력 : withParam2 테스클릿!");
 
             return RepeatStatus.FINISHED;
         };
