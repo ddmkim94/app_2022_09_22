@@ -28,9 +28,16 @@ public class OrderItem extends BaseEntity {
     private ProductOption productOption;
 
     private int quantity;
+    private int price;
+    private int salePrice;
+    private int wholesalePrice;
+
 
     public OrderItem(ProductOption productOption, int quantity) {
         this.productOption = productOption;
         this.quantity = quantity;
+        this.price = productOption.getPrice();
+        this.salePrice = productOption.getSalePrice();
+        this.wholesalePrice = productOption.getWholesalePrice();
     }
 }
